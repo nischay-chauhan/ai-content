@@ -1,6 +1,7 @@
 
 import React from 'react'
 import Sidebar from './_components/sidebar';
+import Header from './_components/header';
 
 function layout({
     children,
@@ -13,6 +14,7 @@ function layout({
             <Sidebar />
         </div>
      <div className='md:ml-64'>
+        <Header />
      {children}
      </div>
     </div>
