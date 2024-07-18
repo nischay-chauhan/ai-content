@@ -29,7 +29,7 @@ export default function Navbar() {
       </button>
 
       {/* Mobile Menu */}
-      <nav className={`md:hidden ${menuOpen ? 'block' : 'hidden'} absolute top-16 left-0 w-full bg-background px-4 py-2`}>
+      <nav className={`md:hidden ${menuOpen ? 'block' : 'hidden'} absolute top-16 left-0 w-full bg-background px-4 py-2 transition-height duration-300 ease-in-out`}>
         <div className="flex flex-col items-center gap-4">
           <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
             Home
@@ -47,7 +47,7 @@ export default function Navbar() {
       </nav>
 
       {/* Desktop Menu */}
-      <nav className="hidden md:flex items-center gap-4">
+      <nav className="hidden w-full md:flex items-center gap-4 transition-all duration-300 ease-in hover:text-foreground focus:text-foreground">
         <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
           Home
         </Link>
