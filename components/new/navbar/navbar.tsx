@@ -14,7 +14,6 @@ export default function Navbar() {
   return (
     <header className="flex h-16 w-full items-center justify-between bg-background px-4 md:px-6">
       <Link href={"/"} className="flex items-center gap-2" prefetch={false}>
-        <MountainIcon className="h-6 w-6" />
         <span className="text-lg font-semibold">
           <Image src={"/icon.svg"} alt="logo" width={32} height={32} />
         </span>
