@@ -12,7 +12,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="flex h-16 w-full items-center justify-between bg-background px-4 md:px-6">
+    <header className="flex h-16 w-full items-center justify-between bg-background px-6 md:px-6">
       <Link href={"/"} className="flex items-center gap-2" prefetch={false}>
         <span className="text-lg font-semibold">
           <Image src={"/icon.svg"} alt="logo" width={32} height={32} />
@@ -46,7 +46,7 @@ export default function Navbar() {
       </nav>
 
       {/* Desktop Menu */}
-      <nav className="hidden w-full md:flex items-center gap-4 transition-all duration-300 ease-in hover:text-foreground focus:text-foreground">
+      <nav className="hidden w-full md:flex md:justify-center md:gap-10 transition-all duration-300 ease-in hover:text-foreground focus:text-foreground">
         <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
           Home
         </Link>
