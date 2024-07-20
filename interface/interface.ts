@@ -1,7 +1,10 @@
+import { LucideIcon } from "lucide-react";
+
+
 export interface PromptAreaProps {
     name : string,
     desc : string,
-    icon : string,
+    icon : LucideIcon,
     category : string,
     slug : string,
     aiPrompt : string,

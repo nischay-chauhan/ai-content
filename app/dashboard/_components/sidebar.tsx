@@ -39,7 +39,7 @@ const Sidebar = () => {
             </div>
             <div className="mt-10">
                 {Menu.map((menu , i) => (
-                    <div className={`flex gap-2 mb-2 p-3 hover:bg-primary cursor-pointer hover:text-white rounded-lg ${path === menu.link ? "bg-primary text-white" : ""}`}>
+                    <div key={i} className={`flex gap-2 mb-2 p-3 hover:bg-primary cursor-pointer hover:text-white rounded-lg ${path === menu.link ? "bg-primary text-white" : ""}`}>
                       
                        <menu.icon />
                        <h2>{menu.name}</h2>

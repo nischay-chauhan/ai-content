@@ -1,9 +1,11 @@
+import { AlertCircle, CheckCircle, Code,  Edit3, FileText, Hash, HelpCircle, Instagram, InstagramIcon, Lightbulb, LightbulbIcon, MessageCircle, PenTool, RefreshCcw, ShoppingBasket, Smile, Tag, Type, Youtube } from "lucide-react";
+
 export default [
     {
         name: 'Blog Title Generator',
         desc: 'An AI tool that creates compelling blog titles based on your blog information.',
         category: 'Blog',
-        icon: 'edit-3',
+        icon: Edit3,
         aiPrompt: 'Provide 5 blog topic ideas based on the given niche and outline in bullet points, formatted in a rich text editor.',
         slug: 'generate-blog-title',
         form: [
@@ -24,7 +26,7 @@ export default [
         name: 'Blog Content Generator',
         desc: 'An AI tool that generates engaging blog content based on your provided topic and outline.',
         category: 'Blog',
-        icon: 'file-text',
+        icon: FileText,
         slug: 'blog-content-generation',
         aiPrompt: 'Generate comprehensive blog content based on the provided topic and outline, formatted in a rich text editor.',
         form: [
@@ -45,7 +47,7 @@ export default [
         name: 'Blog Topic Ideas',
         desc: 'An AI tool that generates creative and trending blog topic ideas based on your niche.',
         category: 'Blog',
-        icon: 'bulb',
+        icon: Lightbulb,
         slug: 'blog-topic-idea',
         aiPrompt: 'Generate the top 5 blog topic ideas in bullet points based on the provided niche, formatted in a rich text editor.',
         form: [
@@ -61,7 +63,7 @@ export default [
         name: 'YouTube SEO Title Generator',
         desc: 'An AI tool that creates SEO-optimized and high-ranking YouTube video titles based on your keywords and outline.',
         category: 'YouTube Tools',
-        icon: 'youtube',
+        icon: Youtube,
         slug: 'youtube-seo-title',
         aiPrompt: 'Provide 5 SEO-optimized high-ranking title ideas in bullet points based on the given keywords and outline, formatted in HTML tags.',
         form: [
@@ -82,7 +84,7 @@ export default [
         name: 'YouTube Description Generator',
         desc: 'An AI tool that generates engaging YouTube video descriptions with emojis based on your topic and outline.',
         category: 'YouTube Tools',
-        icon: 'message-circle',
+        icon: MessageCircle,
         slug: 'youtube-description',
         aiPrompt: 'Generate a YouTube description with emojis, under 4-5 lines, based on the provided topic and outline, formatted in a rich text editor.',
         form: [
@@ -103,7 +105,7 @@ export default [
         name: 'YouTube Tags Generator',
         desc: 'An AI tool that generates relevant YouTube tags based on your video title and outline.',
         category: 'YouTube Tools',
-        icon: 'tag',
+        icon: Tag,
         slug: 'youtube-tag',
         aiPrompt: 'Generate 10 relevant YouTube tags in bullet points based on the provided title and outline, formatted in a rich text editor.',
         form: [
@@ -124,7 +126,7 @@ export default [
         name: 'Article Rewriter',
         desc: 'Use this tool to rewrite existing articles or blog posts, making them plagiarism-free and able to bypass AI detectors.',
         category: 'Rewriting Tool',
-        icon: 'refresh-cw',
+        icon: RefreshCcw,
         slug: 'rewrite-article',
         aiPrompt: 'Rewrite the given article without any plagiarism, formatted in a rich text editor.',
         form: [
@@ -140,7 +142,7 @@ export default [
         name: 'Text Improver',
         desc: 'This tool refines your writing, removing errors and redundancies, offering tone analysis and better word choices.',
         category: 'Writing Assistant',
-        icon: 'pen-tool',
+        icon: PenTool,
         slug: 'text-improver',
         aiPrompt: 'Rewrite the given text without any grammatical mistakes and professionally formatted in a rich text editor.',
         form: [
@@ -155,7 +157,7 @@ export default [
         name: 'Add Emojis to Text',
         desc: 'An AI tool that adds relevant emojis to your text, making it more engaging.',
         category: 'Blog',
-        icon: 'smile',
+        icon: Smile,
         slug: 'add-emoji-to-text',
         aiPrompt: 'Add relevant emojis to the given text and rewrite it, formatted in a rich text editor.',
         form: [
@@ -171,7 +173,7 @@ export default [
         name: 'Instagram Post Generator',
         desc: 'An AI tool that generates creative and engaging Instagram posts based on your keywords.',
         category: 'Social Media',
-        icon: 'instagram',
+        icon: InstagramIcon,
         slug: 'instagram-post-generator',
         aiPrompt: 'Generate 3 Instagram posts based on the given keywords, formatted in a rich text editor.',
         form: [
@@ -187,7 +189,7 @@ export default [
         name: 'Instagram Hashtag Generator',
         desc: 'An AI tool that generates trending Instagram hashtags based on your keywords.',
         category: 'Social Media',
-        icon: 'hash',
+        icon: Hash,
         slug: 'instagram-hash-tag-generator',
         aiPrompt: 'Generate 15 Instagram hashtags based on the given keywords, formatted in a rich text editor.',
         form: [
@@ -203,7 +205,7 @@ export default [
         name: 'Instagram Post/Reel Idea Generator',
         desc: 'An AI tool that generates new and trending Instagram post or reel ideas based on your niche.',
         category: 'Social Media',
-        icon: 'lightbulb',
+        icon: LightbulbIcon,
         slug: 'instagram-post-idea-generator',
         aiPrompt: 'Generate 5-10 Instagram post/reel ideas based on the given niche with the latest trends, formatted in a rich text editor.',
         form: [
@@ -219,7 +221,7 @@ export default [
         name: 'English Grammar Checker',
         desc: 'An AI tool to correct your English grammar by providing the text.',
         category: 'English',
-        icon: 'check-circle',
+        icon: CheckCircle,
         slug: 'english-grammar-checker',
         aiPrompt: 'Rewrite the input text by correcting the grammar and formatting it in a rich text editor.',
         form: [
@@ -235,7 +237,7 @@ export default [
         name: 'Code Writer',
         desc: 'An AI tool to generate programming code in any language based on your description.',
         category: 'Coding',
-        icon: 'code',
+        icon: Code,
         slug: 'write-code',
         aiPrompt: 'Based on the provided code description, write the code and format it in a rich text editor with code blocks.',
         form: [
@@ -251,7 +253,7 @@ export default [
         name: 'Code Explainer',
         desc: 'An AI tool to explain programming code in any language.',
         category: 'Coding',
-        icon: 'help-circle',
+        icon: HelpCircle,
         slug: 'explain-code',
         aiPrompt: 'Based on the provided code, explain it line by line and format it in a rich text editor with code blocks.',
         form: [
@@ -267,7 +269,7 @@ export default [
         name: 'Code Bug Detector',
         desc: 'This tool analyzes your code input to pinpoint and fix bugs, offering detailed solutions and alternatives.',
         category: 'Coding',
-        icon: 'alert-circle',
+        icon: AlertCircle ,
         slug: 'code-bug-detector',
         aiPrompt: 'Based on the provided code input, find and solve bugs, formatted in a rich text editor with code blocks.',
         form: [
@@ -283,7 +285,7 @@ export default [
         name: 'Tagline Generator',
         desc: 'Struggling to find the perfect tagline for your brand? Let our AI tool assist you in creating a tagline that stands out.',
         category: 'Marketing',
-        icon: 'type',
+        icon: Type ,
         slug: 'tagline-generator',
         aiPrompt: 'Based on the provided product name and outline, generate 5-10 catchy taglines for the business product, formatted in a rich text editor.',
         form: [
@@ -305,7 +307,7 @@ export default [
         name: 'Product Description Generator',
         desc: 'This is your AI-powered SEO expert, creating captivating and keyword-rich e-commerce product descriptions to boost your online sales.',
         category: 'Marketing',
-        icon: 'shopping-cart',
+        icon: ShoppingBasket,
         slug: 'product-description',
         aiPrompt: 'Based on the provided product name and description, generate a concise product description for e-commerce, formatted in a rich text editor.',
         form: [
