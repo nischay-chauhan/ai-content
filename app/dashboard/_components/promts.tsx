@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import data from '@/app/(doc)/Data'; 
 import { PromptAreaProps } from '@/interface/interface';
 import PromptCard from './PromtCard';
 
-function PromptArea() {
+interface seachProps {
+  searchInput : string
+}
+
+function PromptArea({searchInput}: seachProps) {
+  const [promt , setPromts] = React.useState<PromptAreaProps[]>(data)
+
+  useEffect(() => {
+    if(searchInput.length > 0) {
+      setPromts(data.filter(item => item.name.toLowerCase().includes(searchInput.toLowerCase())))
+    }else{
+      setPromts(data)
+    }
+  }, [searchInput])
+
   return (
-    <div>
-      {data.map((item: PromptAreaProps , index: number) => (
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 ml-4 mt-6'>
+      {promt.map((item: PromptAreaProps , index: number) => (
         <PromptCard 
           key={index}  
           name={item.name}
