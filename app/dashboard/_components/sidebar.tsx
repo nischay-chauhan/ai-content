@@ -43,7 +43,7 @@ const Sidebar = () => {
                     </span>
                 )}
                 <button onClick={toggleSidebar} className="p-1 rounded-full hover:bg-gray-200">
-                    {isSidebarOpen ? <ArrowLeft w-4 h-4/> : <ArrowRight h-4 w-4 /> }
+                    {isSidebarOpen ? <ArrowLeft /> : <ArrowRight  /> }
                 </button>
             </div>
             <div className="mt-10">
