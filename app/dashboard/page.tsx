@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React from 'react'
 import SearchSec from './_components/searrch'
 import PromptArea from './_components/promts'

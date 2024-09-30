@@ -30,10 +30,9 @@ const Sidebar = () => {
 
     const path = usePathname();
     useEffect(() => {
-        console.log(path)
     })
     return (
-        <div className="p-5 shadow-sm border h-screen">
+        <div className="p-5 bg-white shadow-sm border h-screen">
             <div className="flex justify-center border-b">
                 <span className="text-lg font-semibold text-muted-foreground hover:text-primary">Sidebar</span>
             </div>
