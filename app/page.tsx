@@ -20,7 +20,8 @@ export default function Home() {
                   Our platform empowers you to generate code, images, and text with AI effortlessly. Unleash your creativity and drive innovation.
                 </p>
                 <div className="flex gap-4 mt-8">
-                  <Button variant="secondary">Get Started</Button>
+                  <Link href="/dashboard/" className="btn btn-primary">
+                  <Button variant="secondary">Get Started</Button></Link>
                   <Button variant="outline">Learn More</Button>
                 </div>
               </div>

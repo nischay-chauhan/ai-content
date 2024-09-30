@@ -1,24 +1,39 @@
-
-import React from 'react'
+'use client'
+import React from 'react';
 import Sidebar from './_components/sidebar';
 import Header from './_components/header';
+import { SidebarProvider, useSidebar } from '../context/sidebarContext';
 
-function layout({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) {
+function Layout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div className='bg-slate-100 h-screen'>
-        <div className=' md:w-64 md:block fixed hidden'>
-            <Sidebar />
-        </div>
-     <div className='md:ml-64'>
-        <Header />
-     {children}
-     </div>
-    </div>
-  )
+    <SidebarProvider>
+      <LayoutWithSidebar children={children} />
+    </SidebarProvider>
+  );
 }
 
-export default layout
+function LayoutWithSidebar({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const { isSidebarOpen } = useSidebar();
+
+  return (
+    <div className="bg-slate-100 h-screen">
+      <div className="md:block fixed hidden">
+        <Sidebar />
+      </div>
+      <div className={`transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
+        <Header />
+        {children}
+      </div>
+    </div>
+  );
+}
+
+export default Layout;
