@@ -4,13 +4,15 @@ import { PromptAreaProps } from '@/interface/interface';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Loader2, LoaderPinwheel } from 'lucide-react';
 
 interface FormComponentProps {
   selectedPrompt: PromptAreaProps;
   userFormInput: any
+  loading : boolean
 }
 
-function FormComponent({ selectedPrompt , userFormInput}: FormComponentProps) {
+function FormComponent({ selectedPrompt , userFormInput , loading}: FormComponentProps) {
     const [form, setForm] = React.useState<any>({})
     const handleChange = (e:any) => {
         const {name, value} = e.target
@@ -35,7 +37,7 @@ function FormComponent({ selectedPrompt , userFormInput}: FormComponentProps) {
             </div>
         ))}
 
-        <Button type='submit' className='py-6 w-full'>Generate Content</Button>
+        <Button disabled={loading}  type='submit' className='py-6 w-full'>{loading && <Loader2 className='w-8 h-8 animate-spin' /> || 'Generate Content'}</Button>
      </form>
     </div>
   );
