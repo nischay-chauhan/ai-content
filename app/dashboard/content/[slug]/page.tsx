@@ -14,6 +14,7 @@ interface CreateContentProps {
 
 function CreateContent({ params }: CreateContentProps) {
   const [loading , setLoading] = useState(false)
+  const [aiOutput , setAiOutput] = useState<string>('')
   const selectedPrompt = Data?.find((item) => item.slug === params.slug);
 
   const generateAiContent = async(form: any) => {
@@ -22,7 +23,8 @@ function CreateContent({ params }: CreateContentProps) {
     const finalPrompt =JSON.stringify(form)+ (promt);
 
     const result = await chatSession.sendMessage(finalPrompt);
-    console.log(result.response.text());
+    console.log(result?.response.text());
+    setAiOutput(result?.response.text())
     setLoading(false)
 
   }
@@ -35,7 +37,7 @@ function CreateContent({ params }: CreateContentProps) {
     <div className='grid grid-cols-1 md:grid-cols-3 gap-5 p-5'>
       <FormComponent selectedPrompt={selectedPrompt} loading={loading} userFormInput={(data:any) => generateAiContent(data)} />
      <div className='col-span-2'>
-     <Output />
+     <Output aiOutput={aiOutput}/>
      </div>
     </div>
   );
