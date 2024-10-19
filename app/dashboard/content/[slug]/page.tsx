@@ -5,6 +5,9 @@ import Output from '../_components/Output';
 import Data from '@/app/(doc)/Data';
 import { PromptAreaProps } from '@/interface/interface';
 import { chatSession } from '@/utils/aiModal';
+import { db } from '@/utils/db';
+import { AIOutput } from '@/utils/schema';
+import { useUser } from '@clerk/nextjs';
 
 interface CreateContentProps {
   params: {
@@ -16,6 +19,7 @@ function CreateContent({ params }: CreateContentProps) {
   const [loading , setLoading] = useState(false)
   const [aiOutput , setAiOutput] = useState<string>('')
   const selectedPrompt = Data?.find((item) => item.slug === params.slug);
+  const {user} = useUser()
 
   const generateAiContent = async(form: any) => {
     setLoading(true)
@@ -25,9 +29,28 @@ function CreateContent({ params }: CreateContentProps) {
     const result = await chatSession.sendMessage(finalPrompt);
     console.log(result?.response.text());
     setAiOutput(result?.response.text())
+    await saveInDb(form, selectedPrompt?.slug, result?.response.text())
     setLoading(false)
 
   }
+
+  const saveInDb = async (formdata: any, slug: any, aiOutput: string) => {
+    try {
+      const result = await db.insert(AIOutput).values({
+        formData: formdata,
+        templateSlug: slug,
+        aiResponse: aiOutput,
+        createdBy: user?.primaryEmailAddress?.emailAddress || 'unknown',
+      });
+      console.log(result);
+      return result;
+      
+    } catch (error) {
+      console.error('Error inserting into DB:', error);
+      throw error;
+    }
+  };
+  
 
   if (!selectedPrompt) {
     return <div>Prompt not found</div>;

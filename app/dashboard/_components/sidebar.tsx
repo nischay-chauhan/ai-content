@@ -10,7 +10,7 @@ const Sidebar = () => {
         {
             name: "Home",
             icon: Home,
-            link: "/"
+            link: "/dashboard"
         },
         {
             name: "History",
@@ -50,10 +50,11 @@ const Sidebar = () => {
                 {Menu.map((menu, i) => (
                     <div key={i} className={`flex gap-2 mb-2 p-3 hover:bg-primary cursor-pointer hover:text-white rounded-lg ${path === menu.link ? "bg-primary text-white" : ""}`}>
                         <menu.icon />
-                        {isSidebarOpen && <h2>{menu.name}</h2>}
+                        {isSidebarOpen && <Link href={menu.link}>{menu.name}</Link>}
                     </div>
                 ))}
             </div>
+            <div></div>
         </div>
     );
 };
