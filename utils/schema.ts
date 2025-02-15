@@ -28,3 +28,11 @@ export const transactions = pgTable('transactions', {
   paymentId: varchar('payment_id'),
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+export const userCredits = pgTable("user_credits", {
+  id: serial('id').primaryKey(),
+  userId: varchar('user_id').notNull(),
+  credits: integer('credits').notNull().default(100),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
+});
