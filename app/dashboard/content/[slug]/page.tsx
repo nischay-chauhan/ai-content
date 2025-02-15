@@ -8,6 +8,8 @@ import { chatSession } from '@/utils/aiModal';
 import { db } from '@/utils/db';
 import { AIOutput } from '@/utils/schema';
 import { useUser } from '@clerk/nextjs';
+import { checkAndDeductCredits } from '@/utils/creditManager';
+import { toast } from 'sonner';
 
 interface CreateContentProps {
   params: {
@@ -22,16 +24,29 @@ function CreateContent({ params }: CreateContentProps) {
   const {user} = useUser()
 
   const generateAiContent = async(form: any) => {
-    setLoading(true)
-    const promt = selectedPrompt?.aiPrompt;
-    const finalPrompt =JSON.stringify(form)+ (promt);
+    try {
+      if (!user?.id) {
+        toast.error('Please sign in to continue');
+        return;
+      }
 
-    const result = await chatSession.sendMessage(finalPrompt);
-    console.log(result?.response.text());
-    setAiOutput(result?.response.text())
-    await saveInDb(form, selectedPrompt?.slug, result?.response.text())
-    setLoading(false)
+      setLoading(true);
+      
+      // Check and deduct credits
+      await checkAndDeductCredits(user.id);
+      
+      const promt = selectedPrompt?.aiPrompt;
+      const finalPrompt = JSON.stringify(form) + (promt);
 
+      const result = await chatSession.sendMessage(finalPrompt);
+      setAiOutput(result?.response.text());
+      await saveInDb(form, selectedPrompt?.slug, result?.response.text());
+      
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to generate content');
+    } finally {
+      setLoading(false);
+    }
   }
 
   const saveInDb = async (formdata: any, slug: any, aiOutput: string) => {
