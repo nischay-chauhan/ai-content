@@ -1,32 +1,75 @@
-import React, { useEffect } from 'react'
-import '@toast-ui/editor/dist/toastui-editor.css';
-import { Editor } from '@toast-ui/react-editor';
-import { Button } from '@/components/ui/button';
-import { Copy } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+import 'react-quill/dist/quill.snow.css'
+import { Button } from '@/components/ui/button'
+import { Copy } from 'lucide-react'
+import { toast } from 'sonner'
 
-interface props{
-  output : string
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading Editor...</p>
+})
+
+interface OutputProps {
+  aiOutput: string
 }
-function Output({output} : props) {
-  const editorRef = React.useRef<Editor>(null);
+
+function Output({aiOutput}: OutputProps) {
+  const [value, setValue] = useState('')
+
   useEffect(() => {
-    const editorInstance = editorRef.current?.getInstance();
-    editorInstance.setMarkdown(output)
-  } , [output])
+    // Convert plain text to HTML if needed
+    setValue(aiOutput)
+  }, [aiOutput])
+
+  const modules = {
+    toolbar: [
+      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' },
+       { 'indent': '-1'}, { 'indent': '+1' }],
+      ['link', 'code-block'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'align': [] }],
+      ['clean']
+    ],
+    
+  }
+
+  const handleCopy = () => {
+    // Copy the text content without HTML
+    const tempDiv = document.createElement('div')
+    tempDiv.innerHTML = value
+    const textContent = tempDiv.textContent || tempDiv.innerText
+    
+    navigator.clipboard.writeText(textContent)
+      .then(() => {
+        toast.success('Content copied!')
+      })
+      .catch(err => {
+        toast.error('Failed to copy!')
+        console.error('Failed to copy:', err)
+      })
+  }
+
   return (
     <div className='bg-white rounded-lg shadow-lg border'>
       <div className='flex justify-between items-center p-5'>
         <h2 className='font-medium text-lg'>Your result</h2>
-        <Button className='flex gap-2'><Copy />Copy</Button>
+        <Button onClick={handleCopy} className='flex gap-2'>
+          <Copy className="h-4 w-4" />
+          Copy
+        </Button>
       </div>
-    <Editor
-        initialValue="Your result will be displayed here"
-        initialEditType="wysiwyg"
-        useCommandShortcut={true}
-        height="600px"
-        ref = {editorRef}
-        onChange={() => console.log(editorRef.current?.getInstance().getMarkdown())}
-  />
+      <div className='quill-wrapper'>
+        <ReactQuill
+          value={value}
+          onChange={setValue}
+          modules={modules}
+          theme="snow"
+        />
+      </div>
     </div>
   )
 }

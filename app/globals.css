@@ -67,3 +67,58 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom styles for React-Quill */
+.quill-wrapper {
+  .quill {
+    height: 600px;
+    
+    .ql-container {
+      height: calc(100% - 42px); /* Adjust if you disabled toolbar */
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    .ql-editor {
+      padding: 20px;
+      overflow-y: auto;
+      
+      /* Style for code blocks */
+      pre.ql-syntax {
+        background-color: #f6f8fa;
+        border-radius: 6px;
+        padding: 16px;
+        font-family: monospace;
+      }
+      
+      /* Style for blockquotes */
+      blockquote {
+        border-left: 4px solid #ccc;
+        padding-left: 16px;
+        margin: 16px 0;
+      }
+      
+      /* Style for lists */
+      ul, ol {
+        padding-left: 24px;
+      }
+    }
+
+    /* Hide default toolbar if not needed */
+    .ql-toolbar {
+      display: none;
+    }
+  }
+}
+
+/* Make editor background white and match border styles */
+.ql-container.ql-snow {
+  border: none !important;
+  background: white;
+}
+
+/* Improve readability of text */
+.ql-editor p {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}

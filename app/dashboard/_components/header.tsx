@@ -1,13 +1,12 @@
 import { Input } from '@/components/ui/input'
-import { Search } from 'lucide-react'
+import { LucideActivitySquare, Search } from 'lucide-react'
 import React from 'react'
 
 function Header() {
   return (
     <div className='p-4 shadow-lg border-b-2 flex items-center justify-between'>
         <div className='flex gap-2 max-w-md items-center p-2 rounded-md bg-white'>
-            <Search />
-            <Input placeholder="Search"  />
+            <LucideActivitySquare className='w-16 h-8' />
         </div>
         <div className='flex gap-2 bg-primary py-4 px-1 rounded-full'>
             <h2 className=' text-xs text-white px-2'>

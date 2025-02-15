@@ -5,6 +5,9 @@ import Output from '../_components/Output';
 import Data from '@/app/(doc)/Data';
 import { PromptAreaProps } from '@/interface/interface';
 import { chatSession } from '@/utils/aiModal';
+import { db } from '@/utils/db';
+import { AIOutput } from '@/utils/schema';
+import { useUser } from '@clerk/nextjs';
 
 interface CreateContentProps {
   params: {
@@ -13,21 +16,41 @@ interface CreateContentProps {
 }
 
 function CreateContent({ params }: CreateContentProps) {
+  const [loading , setLoading] = useState(false)
+  const [aiOutput , setAiOutput] = useState<string>('')
   const selectedPrompt = Data?.find((item) => item.slug === params.slug);
-  const [loading , setLoading] = useState<boolean>(false)
-  const [output , setOutput] = useState<string>("")
+  const {user} = useUser()
 
   const generateAiContent = async(form: any) => {
     setLoading(true)
-    const selectedPromptAI = selectedPrompt?.aiPrompt; 
-    const prompt = JSON.stringify(form) + " " + selectedPromptAI;
-    console.log(prompt)
-    const result = await chatSession.sendMessage(prompt);
-    console.log(result.response.text()) 
-    setOutput(result.response.text());
+    const promt = selectedPrompt?.aiPrompt;
+    const finalPrompt =JSON.stringify(form)+ (promt);
+
+    const result = await chatSession.sendMessage(finalPrompt);
+    console.log(result?.response.text());
+    setAiOutput(result?.response.text())
+    await saveInDb(form, selectedPrompt?.slug, result?.response.text())
     setLoading(false)
 
   }
+
+  const saveInDb = async (formdata: any, slug: any, aiOutput: string) => {
+    try {
+      const result = await db.insert(AIOutput).values({
+        formData: formdata,
+        templateSlug: slug,
+        aiResponse: aiOutput,
+        createdBy: user?.primaryEmailAddress?.emailAddress || 'unknown',
+      });
+      console.log(result);
+      return result;
+      
+    } catch (error) {
+      console.error('Error inserting into DB:', error);
+      throw error;
+    }
+  };
+  
 
   if (!selectedPrompt) {
     return <div>Prompt not found</div>;
@@ -35,9 +58,9 @@ function CreateContent({ params }: CreateContentProps) {
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 gap-5 p-5'>
-      <FormComponent loading={loading} selectedPrompt={selectedPrompt} userFormInput={(data:any) => generateAiContent(data)} />
+      <FormComponent selectedPrompt={selectedPrompt} loading={loading} userFormInput={(data:any) => generateAiContent(data)} />
      <div className='col-span-2'>
-     <Output output={output} />
+     <Output aiOutput={aiOutput}/>
      </div>
     </div>
   );
