@@ -1,42 +1,32 @@
 import { db } from '@/utils/db';
 import { userCredits } from '@/utils/schema';
 import { eq } from 'drizzle-orm';
-import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'sonner';
 
-const INITIAL_CREDITS = 5; // Free trial credits
+const FREE_CREDITS = 3;
+const MIN_CREDITS_FOR_PAYWALL = 0;
 
 export async function checkAndDeductCredits(userId: string, amount: number = 1) {
   try {
-    // First get user credits
-    const userCredit = await db.query.userCredits.findFirst({
+    let userCredit = await db.query.userCredits.findFirst({
       where: (credits, { eq }) => eq(credits.userId, userId)
     });
 
-    // If no credits found, create initial credits
-    if (!userCredit) {
-      await db.insert(userCredits).values({
-        userId,
-        credits: INITIAL_CREDITS,
-        updatedAt: new Date()
-      });
-      
-      // Return new credit balance after deduction
-      return INITIAL_CREDITS - amount;
-    }
-
-    if (userCredit.credits < amount) {
+    if (!userCredit || userCredit.credits < amount) {
+      toast.error('Insufficient credits. Please purchase more to continue.');
       throw new Error('Insufficient credits');
     }
 
-    // Update credits
+    // Deduct credits
+    const newCreditAmount = userCredit.credits - amount;
     await db.update(userCredits)
       .set({ 
-        credits: userCredit.credits - amount,
+        credits: newCreditAmount,
         updatedAt: new Date()
       })
       .where(eq(userCredits.userId, userId));
 
-    return userCredit.credits - amount;
+    return newCreditAmount;
   } catch (error) {
     console.error('Error managing credits:', error);
     throw error;

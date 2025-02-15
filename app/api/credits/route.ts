@@ -12,12 +12,26 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'User ID required' }, { status: 400 });
     }
 
-    const credits = await db.query.userCredits.findFirst({
+    let credits = await db.query.userCredits.findFirst({
       where: (credits, { eq }) => eq(credits.userId, userId)
     });
 
-    return NextResponse.json({ credits: credits?.credits || 0 });
+    if (!credits) {
+      // Create initial credits for new user
+      await db.insert(userCredits).values({
+        userId,
+        credits: 3,
+        updatedAt: new Date()
+      });
+      
+      credits = await db.query.userCredits.findFirst({
+        where: (credits, { eq }) => eq(credits.userId, userId)
+      });
+    }
+
+    return NextResponse.json({ credits: credits?.credits ?? 0 });
   } catch (error) {
+    console.error('Error managing credits:', error);
     return NextResponse.json({ error: 'Failed to fetch credits' }, { status: 500 });
   }
 } 

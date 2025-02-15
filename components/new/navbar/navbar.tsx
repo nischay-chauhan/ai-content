@@ -3,6 +3,7 @@ import { MenuIcon, MountainIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { UserButton } from "@/components/UserButton";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,6 +61,16 @@ export default function Navbar() {
           Contact
         </Link>
       </nav>
+
+      <div className="flex items-center gap-4">
+        <Link 
+          href="/dashboard" 
+          className="text-sm font-medium text-gray-700 hover:text-gray-900"
+        >
+          Dashboard
+        </Link>
+        <UserButton />
+      </div>
     </header>
   );
 }

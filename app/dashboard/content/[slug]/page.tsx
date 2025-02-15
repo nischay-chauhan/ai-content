@@ -19,12 +19,13 @@ interface CreateContentProps {
 }
 
 function CreateContent({ params }: CreateContentProps) {
-  const [loading , setLoading] = useState(false)
-  const [aiOutput , setAiOutput] = useState<string>('')
+  const [loading, setLoading] = useState(false);
+  const [aiOutput, setAiOutput] = useState<string>('');
+  const [creditRefresh, setCreditRefresh] = useState(0);
   const selectedPrompt = Data?.find((item) => item.slug === params.slug);
-  const {user} = useUser()
+  const { user } = useUser();
 
-  const generateAiContent = async(form: any) => {
+  const generateAiContent = async (form: any) => {
     try {
       if (!user?.id) {
         toast.error('Please sign in to continue');
@@ -35,6 +36,7 @@ function CreateContent({ params }: CreateContentProps) {
       
       // Check and deduct credits
       await checkAndDeductCredits(user.id);
+      setCreditRefresh(prev => prev + 1);
       
       const promt = selectedPrompt?.aiPrompt;
       const finalPrompt = JSON.stringify(form) + (promt);
@@ -76,7 +78,7 @@ function CreateContent({ params }: CreateContentProps) {
 
   return (
     <div className='space-y-5 p-5'>
-      <CreditDisplay />
+      <CreditDisplay refreshTrigger={creditRefresh} />
       <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
         <FormComponent selectedPrompt={selectedPrompt} loading={loading} userFormInput={(data:any) => generateAiContent(data)} />
         <div className='col-span-2'>
