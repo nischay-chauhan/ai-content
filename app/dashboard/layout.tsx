@@ -25,7 +25,7 @@ function LayoutWithSidebar({
 
   return (
     <div className="bg-slate-100 h-full">
-      <div className="md:block fixed hidden">
+      <div className="fixed top-0 z-50">
         <Sidebar />
       </div>
       <div className={` pt-10 transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-20'}` }>

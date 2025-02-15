@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/new/navbar/navbar";
 import { Footer } from "@/components/new/footer/footer";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from 'sonner';
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -20,10 +21,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
     <html className="" lang="en">
+      <head>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      </head>
       <body className={inter.className}>
       <Navbar />
         {children}
-        </body>
+        <Toaster position="top-center" richColors />
+      </body>
     </html>
     </ClerkProvider>
   );
