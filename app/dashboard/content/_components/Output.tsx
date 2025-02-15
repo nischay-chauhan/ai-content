@@ -34,6 +34,7 @@ function Output({aiOutput}: OutputProps) {
       [{ 'align': [] }],
       ['clean']
     ],
+    
   }
 
   const handleCopy = () => {
