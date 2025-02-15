@@ -10,6 +10,27 @@ const ReactQuill = dynamic(() => import('react-quill'), {
   loading: () => <p>Loading Editor...</p>
 })
 
+const modules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link', 'image'],
+    ['clean']
+  ]
+}
+
+const formats = [
+  'header',
+  'bold', 'italic', 'underline', 'strike',
+  'color', 'background',
+  'list', 'bullet',
+  'align',
+  'link', 'image'
+]
+
 interface OutputProps {
   aiOutput: string
 }
@@ -21,21 +42,6 @@ function Output({aiOutput}: OutputProps) {
     // Convert plain text to HTML if needed
     setValue(aiOutput)
   }, [aiOutput])
-
-  const modules = {
-    toolbar: [
-      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-      [{ size: [] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' },
-       { 'indent': '-1'}, { 'indent': '+1' }],
-      ['link', 'code-block'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'align': [] }],
-      ['clean']
-    ],
-    
-  }
 
   const handleCopy = () => {
     // Copy the text content without HTML
@@ -62,12 +68,14 @@ function Output({aiOutput}: OutputProps) {
           Copy
         </Button>
       </div>
-      <div className='quill-wrapper'>
+      <div className='p-5'>
         <ReactQuill
+          theme="snow"
           value={value}
           onChange={setValue}
           modules={modules}
-          theme="snow"
+          formats={formats}
+          className='min-h-[300px] [&_.ql-editor]:min-h-[250px]'
         />
       </div>
     </div>

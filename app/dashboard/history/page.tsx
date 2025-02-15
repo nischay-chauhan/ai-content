@@ -1,92 +1,77 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { getHistory } from '@/utils/getHistory';
+import { db } from '@/utils/db';
+import { AIOutput } from '@/utils/schema';
+import { eq } from 'drizzle-orm';
 import ShowHistory from './_components/ShowHistory';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, SortAsc, SortDesc } from "lucide-react";
 
-type HistoryItem = {
-  id: number;
-  formData: string;
-  aiResponse: string | null;
-  templateSlug: string | null;
-  createdBy: string | null;
-  createdAt: Date | null;
-};
-
-const HistoryPage = () => {
+export default function HistoryPage() {
   const { user } = useUser();
-  const email = user?.primaryEmailAddress?.emailAddress;
-  const [data, setData] = useState<HistoryItem[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (email) {
-        const historyData = await getHistory(email);
-        setData(historyData);
-      }
-    };
+    if (user?.id) {
+      fetchHistory();
+    }
+  }, [user, sortOrder]);
 
-    fetchData();
-  }, [email]);
+  const fetchHistory = async () => {
+    try {
+      const response = await fetch(`/api/history?userId=${user?.id}&sort=${sortOrder}`);
+      const data = await response.json();
+      setHistory(data);
+    } catch (error) {
+      console.error('Failed to fetch history:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const validSortByProperties = ['id', 'formData', 'aiResponse', 'templateSlug', 'createdBy', 'createdAt'];
-
-  if (!validSortByProperties.includes(sortBy)) {
-    throw new Error(`Invalid sortBy property: ${sortBy}`);
-  }
-  
-  
-
-  const filteredAndSortedData = data
-    .filter((item) =>
-      item.formData.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.templateSlug!.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    
-
-    if (!validSortByProperties.includes(sortBy)) {
-  throw new Error(`Invalid sortBy property: ${sortBy}`);
-}
-
+  const filteredHistory = history.filter(item => 
+    item.aiResponse?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.templateSlug?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="container mx-auto p-4 space-y-4">
-      <h1 className="text-2xl font-bold mb-4">History</h1>
-      <div className="flex space-x-2">
-        <div className="relative flex-grow">
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex-1 relative">
+          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
-            type="text"
-            placeholder="Search by form data or template slug"
+            placeholder="Search in history..."
+            className="pl-10"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
-      
+        <Button
+          variant="outline"
+          onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+          className="flex gap-2"
+        >
+          {sortOrder === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
+          Sort
+        </Button>
       </div>
-      {filteredAndSortedData.length > 0 ? (
-        filteredAndSortedData.map((item: HistoryItem) => (
-          <ShowHistory
-            key={item.id}
-            id={item.id}
-            formData={item.formData}
-            aiResponse={item.aiResponse}
-            templateSlug={item.templateSlug}
-            createdBy={item.createdBy}
-            createdAt={item.createdAt}
-          />
-        ))
+
+      {loading ? (
+        <div className="text-center">Loading...</div>
+      ) : filteredHistory.length > 0 ? (
+        <div className="grid gap-4">
+          {filteredHistory.map((item) => (
+            <ShowHistory key={item.id} item={item} />
+          ))}
+        </div>
       ) : (
-        <p>No history found.</p>
+        <div className="text-center text-gray-500">No history found</div>
       )}
     </div>
   );
-};
-
-export default HistoryPage;
+}
