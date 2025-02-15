@@ -10,6 +10,7 @@ import { AIOutput } from '@/utils/schema';
 import { useUser } from '@clerk/nextjs';
 import { checkAndDeductCredits } from '@/utils/creditManager';
 import { toast } from 'sonner';
+import CreditDisplay from '@/components/CreditDisplay';
 
 interface CreateContentProps {
   params: {
@@ -51,15 +52,17 @@ function CreateContent({ params }: CreateContentProps) {
 
   const saveInDb = async (formdata: any, slug: any, aiOutput: string) => {
     try {
+      if (!user?.id) throw new Error('User not authenticated');
+      
       const result = await db.insert(AIOutput).values({
+        userId: user.id,
         formData: formdata,
         templateSlug: slug,
         aiResponse: aiOutput,
         createdBy: user?.primaryEmailAddress?.emailAddress || 'unknown',
       });
-      console.log(result);
-      return result;
       
+      return result;
     } catch (error) {
       console.error('Error inserting into DB:', error);
       throw error;
@@ -72,11 +75,14 @@ function CreateContent({ params }: CreateContentProps) {
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-3 gap-5 p-5'>
-      <FormComponent selectedPrompt={selectedPrompt} loading={loading} userFormInput={(data:any) => generateAiContent(data)} />
-     <div className='col-span-2'>
-     <Output aiOutput={aiOutput}/>
-     </div>
+    <div className='space-y-5 p-5'>
+      <CreditDisplay />
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+        <FormComponent selectedPrompt={selectedPrompt} loading={loading} userFormInput={(data:any) => generateAiContent(data)} />
+        <div className='col-span-2'>
+          <Output aiOutput={aiOutput}/>
+        </div>
+      </div>
     </div>
   );
 }

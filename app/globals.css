@@ -122,3 +122,56 @@
   margin-bottom: 1em;
   line-height: 1.6;
 }
+
+/* Quill Editor Styles */
+.quill {
+  .ql-toolbar {
+    border-radius: 8px 8px 0 0;
+    border-color: #e2e8f0;
+    background-color: #f8fafc;
+  }
+
+  .ql-container {
+    border-radius: 0 0 8px 8px;
+    border-color: #e2e8f0;
+    font-family: inherit;
+  }
+
+  .ql-editor {
+    min-height: 250px;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 20px;
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
+    }
+
+    h3 {
+      font-size: 1.17em;
+      margin-bottom: 0.5em;
+    }
+
+    ul, ol {
+      padding-left: 2em;
+      margin-bottom: 1em;
+    }
+
+    pre {
+      background-color: #f8fafc;
+      padding: 1em;
+      border-radius: 4px;
+      margin-bottom: 1em;
+    }
+  }
+}
