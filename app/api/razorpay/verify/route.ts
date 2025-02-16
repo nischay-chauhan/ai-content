@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@/utils/db';
-import { credits, transactions } from '@/utils/schema';
+import { userCredits, transactions } from '@/utils/schema';
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
 import { eq } from 'drizzle-orm';
@@ -25,36 +25,46 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
-    // Add credits to user's account
-    await db.transaction(async (tx) => {
-      const userCredits = await tx.query.credits.findFirst({
+    try {
+      // First update credits
+      const userCredit = await db.query.userCredits.findFirst({
         where: (credits, { eq }) => eq(credits.userId, userId)
       });
 
-      if (userCredits) {
-        await tx.update(credits)
-          .set({ balance: userCredits.balance + amount })
-          .where(eq(credits.userId, userId));
+      if (userCredit) {
+        await db.update(userCredits)
+          .set({ 
+            credits: userCredit.credits + amount,
+            updatedAt: new Date()
+          })
+          .where(eq(userCredits.userId, userId));
       } else {
-        await tx.insert(credits).values({
-          id: uuidv4(),
+        await db.insert(userCredits).values({
           userId,
-          balance: amount
+          credits: amount,
+          updatedAt: new Date()
         });
       }
 
-      await tx.insert(transactions).values({
+      // Then record the transaction
+      await db.insert(transactions).values({
         id: uuidv4(),
         userId,
         amount,
         type: 'credit',
-        description: 'Payment successful',
-        paymentId: razorpay_payment_id
+        description: `Purchased ${amount} credits`,
+        paymentId: razorpay_payment_id,
+        createdAt: new Date()
       });
-    });
 
-    return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true });
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      // If there's a database error, we should notify admin and handle compensation
+      return NextResponse.json({ error: 'Failed to process payment' }, { status: 500 });
+    }
   } catch (error) {
+    console.error('Error processing payment:', error);
     return NextResponse.json({ error: 'Error processing payment' }, { status: 500 });
   }
 } 
