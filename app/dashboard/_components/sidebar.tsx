@@ -1,5 +1,5 @@
 'use client'
-import { ArrowLeft, ArrowRight, DollarSignIcon, History, Home, Settings, WalletCards } from "lucide-react";
+import { ArrowLeft, ArrowRight, CreditCard, DollarSignIcon, History, Home, Settings, WalletCards } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -26,6 +26,11 @@ const Sidebar = () => {
             name: "Settings",
             icon: Settings,
             link: "/dashboard/settings"
+        },
+        {
+            name: "Transactions",
+            icon: CreditCard,
+            link: "/dashboard/transactions"
         }
     ];
 

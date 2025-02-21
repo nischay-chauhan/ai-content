@@ -22,7 +22,11 @@ export default function RootLayout({
     <ClerkProvider>
     <html className="" lang="en">
       <head>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script 
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          defer
+          async
+        ></script>
       </head>
       <body className={inter.className}>
       <Navbar />

@@ -17,7 +17,6 @@ export async function GET(req: Request) {
     });
 
     if (!credits) {
-      // Create initial credits for new user
       await db.insert(userCredits).values({
         userId,
         credits: 3,
