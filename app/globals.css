@@ -175,3 +175,7 @@
     }
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}

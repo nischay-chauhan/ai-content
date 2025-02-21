@@ -25,9 +25,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
-    try {
-      // First update credits
-      const userCredit = await db.query.userCredits.findFirst({
+      try {
+        const userCredit = await db.query.userCredits.findFirst({
         where: (credits, { eq }) => eq(credits.userId, userId)
       });
 
@@ -46,7 +45,6 @@ export async function POST(req: Request) {
         });
       }
 
-      // Then record the transaction
       await db.insert(transactions).values({
         id: uuidv4(),
         userId,
@@ -60,7 +58,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true });
     } catch (dbError) {
       console.error('Database error:', dbError);
-      // If there's a database error, we should notify admin and handle compensation
       return NextResponse.json({ error: 'Failed to process payment' }, { status: 500 });
     }
   } catch (error) {
