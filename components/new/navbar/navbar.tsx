@@ -2,6 +2,7 @@
 import { MenuIcon, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { UserButton } from "@/components/UserButton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -29,14 +30,20 @@ export default function Navbar() {
     { name: "Pricing", href: "#pricing" },
   ];
 
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
+  }
+
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-          ? "bg-white/80 backdrop-blur-md shadow-md border-b border-white/20"
-          : "bg-transparent"
+        ? "bg-white/80 backdrop-blur-md shadow-md border-b border-white/20"
+        : "bg-transparent"
         }`}
     >
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
