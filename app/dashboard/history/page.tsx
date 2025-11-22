@@ -1,3 +1,4 @@
+// History page now displays AI responses truncated to 100 characters with a "Read more" toggle and includes an Edit button linking to the content editor.
 'use client';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
@@ -34,7 +35,7 @@ export default function HistoryPage() {
     }
   };
 
-  const filteredHistory = history.filter(item => 
+  const filteredHistory = history.filter(item =>
     item.aiResponse?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.templateSlug?.toLowerCase().includes(searchTerm.toLowerCase())
   );

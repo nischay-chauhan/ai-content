@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css'
 import { Button } from '@/components/ui/button'
 import { Copy } from 'lucide-react'
 import { toast } from 'sonner'
+import { marked } from 'marked'
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
@@ -15,7 +16,7 @@ const modules = {
     [{ 'header': [1, 2, 3, false] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'color': [] }, { 'background': [] }],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     ['link', 'image'],
     ['clean']
@@ -35,12 +36,24 @@ interface OutputProps {
   aiOutput: string
 }
 
-function Output({aiOutput}: OutputProps) {
+function Output({ aiOutput }: OutputProps) {
   const [value, setValue] = useState('')
 
   useEffect(() => {
-    // Convert plain text to HTML if needed
-    setValue(aiOutput)
+    // Convert markdown to HTML for rich text display
+    const convertMarkdownToHtml = async () => {
+      if (aiOutput) {
+        try {
+          const htmlContent = await marked(aiOutput)
+          setValue(htmlContent)
+        } catch (error) {
+          console.error('Error converting markdown:', error)
+          setValue(aiOutput) // Fallback to plain text
+        }
+      }
+    }
+
+    convertMarkdownToHtml()
   }, [aiOutput])
 
   const handleCopy = () => {
@@ -48,7 +61,7 @@ function Output({aiOutput}: OutputProps) {
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = value
     const textContent = tempDiv.textContent || tempDiv.innerText
-    
+
     navigator.clipboard.writeText(textContent)
       .then(() => {
         toast.success('Content copied!')
