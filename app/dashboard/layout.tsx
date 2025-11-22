@@ -24,12 +24,15 @@ function LayoutWithSidebar({
   const { isSidebarOpen } = useSidebar();
 
   return (
-    <div className="bg-slate-100 h-full">
-      <div className="fixed top-0 z-50">
+    <div className="h-full bg-white">
+      <div className="fixed top-0 z-50 h-full">
         <Sidebar />
       </div>
-      <div className={` pt-10 transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-20'}` }>
-        
+      <div
+        className={`transition-all duration-300 ${isSidebarOpen ? "md:ml-72" : "md:ml-20"
+          }`}
+      >
+        <Header />
         {children}
       </div>
     </div>

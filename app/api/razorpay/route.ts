@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@/utils/db';
-import { credits, transactions } from '@/utils/schema';
+import { transactions } from '@/utils/schema';
 import { v4 as uuidv4 } from 'uuid';
 
 const razorpay = new Razorpay({
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     const { amount } = await req.json();
 
     const order = await razorpay.orders.create({
-      amount: amount * 100, 
+      amount: amount * 100,
       currency: 'INR',
       receipt: uuidv4(),
     });
