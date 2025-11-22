@@ -32,6 +32,7 @@ function LayoutWithSidebar({
         className={`transition-all duration-300 ${isSidebarOpen ? "md:ml-72" : "md:ml-20"
           }`}
       >
+        <Header />
         {children}
       </div>
     </div>
