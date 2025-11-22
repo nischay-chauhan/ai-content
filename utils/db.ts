@@ -1,12 +1,14 @@
-import { drizzle } from 'drizzle-orm/neon-http';
+import { drizzle } from 'drizzle-orm/neon-serverless';
 import * as schema from "./schema"
-import { neon } from '@neondatabase/serverless';
+import { Pool } from '@neondatabase/serverless';
 
-const sql = neon('postgresql://masternischay:eQdzuS4I6rNP@ep-bold-sunset-a18o47nc.ap-southeast-1.aws.neon.tech/ai-content?sslmode=require');
+const pool = new Pool({ connectionString: 'postgresql://masternischay:eQdzuS4I6rNP@ep-bold-sunset-a18o47nc.ap-southeast-1.aws.neon.tech/ai-content?sslmode=require' });
 
 async function testConnection() {
   try {
-    await sql`SELECT 1`;
+    const client = await pool.connect();
+    await client.query('SELECT 1');
+    client.release();
     console.log('✅ Database connected successfully!');
   } catch (error) {
     console.error('❌ Database connection failed:', error);
@@ -15,5 +17,5 @@ async function testConnection() {
 
 testConnection();
 
-export const db = drizzle(sql, { schema });
+export const db = drizzle(pool, { schema });
 console.log('🚀 Drizzle instance created');
